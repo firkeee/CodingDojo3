@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\StringToBrushConverter.cs" />
     <Compile Include="DataSimulation\Simulator.cs" />
     <Compile Include="ViewModel\ItemVm.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -153,8 +154,6 @@
   <ItemGroup>
     <Resource Include="Images\Warning-WF.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
