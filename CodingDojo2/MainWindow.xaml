@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodingDojo2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="960" Width="1280" Background="Black">
+        Title="MainWindow" Height="960" Width="1280" Background="Black"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -26,7 +27,7 @@
         <StackPanel Grid.Row="1">
             <Label Content="Aktoren" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left" FontSize="18" Foreground="White"/>
 
-            <DataGrid Margin="10" MinHeight="300">
+            <DataGrid Margin="10" MinHeight="300" ItemsSource="{Binding ActorList}" AutoGenerateColumns="True">
                 
             </DataGrid>
 
@@ -37,8 +38,25 @@
 
             <Label Content="Sensoren" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left" FontSize="18" Foreground="White"/>
 
-            <DataGrid MinHeight="300" Margin="10">
-
+            <DataGrid MinHeight="300" Margin="10" ItemsSource="{Binding SensorList}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                    <DataGridTextColumn Header="Room" Binding="{Binding Room}" />
+                    <DataGridTemplateColumn Header="Mode">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Mode}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox DataContext="{Binding Source={StaticResource Locator}}" ItemsSource="{Binding Main.ModeSelectionList}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
             </DataGrid>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">

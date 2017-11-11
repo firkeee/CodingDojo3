@@ -1,4 +1,10 @@
 using GalaSoft.MvvmLight;
+using Shared.BaseModels;
+using Shared.Interfaces;
+using Simulation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CodingDojo2.ViewModel
 {
@@ -16,19 +22,66 @@ namespace CodingDojo2.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        private Simulator sim;
+        private List<ItemVm> modelItems = new List<ItemVm>();
+        public ObservableCollection<ItemVm> SensorList { get; set; }
+        public ObservableCollection<ItemVm> ActorList { get; set; }
+        public ObservableCollection<string> ModeSelectionList { get; private set; }
+
+        private string currentTime = DateTime.Now.ToLocalTime().ToShortTimeString();
+        public string  CurrentTime
+        {
+            get { return currentTime; }
+            set { currentTime = value; RaisePropertyChanged(); }
+        }
+
+        private string currentDate = DateTime.Now.ToLocalTime().ToShortDateString();
+
+        public string CurrentDate
+        {
+            get { return currentDate; }
+            set { currentDate = value; RaisePropertyChanged(); }
+        }
+
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            ActorList = new ObservableCollection<ItemVm>();
+            SensorList = new ObservableCollection<ItemVm>();
+
+            ModeSelectionList = new ObservableCollection<string>();
+            //ModeSelectionList.Add("Enabled");
+            //ModeSelectionList.Add("Disabled");
+            //ModeSelectionList.Add("Auto");
+            //ModeSelectionList.Add("Manual");
+
+            foreach (var item in Enum.GetNames(typeof(SensorModeType)))
+            {
+                ModeSelectionList.Add(item);
+            }
+            foreach (var item in Enum.GetNames(typeof(ModeType)))
+            {
+                ModeSelectionList.Add(item);
+
+            }
+
+            if (!IsInDesignMode)
+            {
+                LoadData();
+                //timer.Start();
+            }
+        }
+
+        private void LoadData()
+        {
+            sim = new Simulator(modelItems);
+
+            foreach(var item in modelItems)
+            {
+                if (item.ItemType.Equals(typeof(ISensor)))
+                    SensorList.Add(item);
+                else if (item.ItemType.Equals(typeof(IActuator)))
+                    ActorList.Add(item);
+            }
         }
     }
 }
